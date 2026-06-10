@@ -1,1 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prueba de Caso — Nuevo centro comercial en Pereira</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style> body { margin: 0; } </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" data-presets="react">
+const { useState, useEffect } = React;
 
+// ====== ICONOS (SVG en línea) ======
+const mkIcon = (children) => ({ size = 24, className = "", fill = "none", style } = {}) =>
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} style={style}>{children}</svg>;
+
+const Building2 = mkIcon(<g><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4M10 10h4M10 14h4M10 18h4"/></g>);
+const FileText = mkIcon(<g><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></g>);
+const Layers = mkIcon(<g><path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></g>);
+const Target = mkIcon(<g><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></g>);
+const Search = mkIcon(<g><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g>);
+const Trophy = mkIcon(<g><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></g>);
+const CheckCircle2 = mkIcon(<g><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></g>);
+const Circle = mkIcon(<circle cx="12" cy="12" r="10"/>);
+const Download = mkIcon(<g><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></g>);
+const ClipboardCheck = mkIcon(<g><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></g>);
+const Lock = mkIcon(<g><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>);
+const Unlock = mkIcon(<g><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></g>);
+const ChevronRight = mkIcon(<path d="m9 18 6-6-6-6"/>);
+const MapPin = mkIcon(<g><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></g>);
+const Clock = mkIcon(<g><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g>);
+const AlertCircle = mkIcon(<g><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></g>);
+const User = mkIcon(<g><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></g>);
+const Lightbulb = mkIcon(<g><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></g>);
+const Ruler = mkIcon(<g><path d="M21.3 8.7 8.7 21.3a1 1 0 0 1-1.4 0l-4.6-4.6a1 1 0 0 1 0-1.4L15.3 2.7a1 1 0 0 1 1.4 0l4.6 4.6a1 1 0 0 1 0 1.4Z"/><path d="m7.5 10.5 2 2M10.5 7.5l2 2M13.5 4.5l2 2M4.5 13.5l2 2"/></g>);
+const Brain = mkIcon(<g><path d="M12 5a3 3 0 1 0-5.997.142 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.142 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></g>);
+const Send = mkIcon(<g><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></g>);
+const Mail = mkIcon(<g><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>);
+const Loader = mkIcon(<g><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></g>);
+const Table2 = mkIcon(<path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>);
+
+// ====== CONFIGURACIÓN ======
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xlgkgbvl";
+const MAP_COMPETIDORES_URL = "https://i.postimg.cc/vZ4SgpPk/IMAGEN-PARA-EXAMEN.jpg";
+
+const COORDS = { lat: 4.811368925810991, lng: -75.77894525777216 };
+const GMAP_LINK = "https://www.google.com/maps/search/?api=1&query=" + COORDS.lat + "," + COORDS.lng;
+const OSM_LINK = "https://www.openstreetmap.org/?mlat=" + COORDS.lat + "&mlon=" + COORDS.lng + "#map=16/" + COORDS.lat + "/" + COORDS.lng;
+const MAX_WORDS = 300;
+
+const BRIEF = {
+  cliente: "Inversiones Comerciales del Café S.A.S.",
+  contexto: "Inversiones Comerciales del Café es un grupo desarrollador inmobiliario con experiencia en proyectos comerciales en el centro-occidente del país. El grupo evalúa el desarrollo de un nuevo centro comercial en Pereira y ya tiene identificado un lote candidato.",
+  encargo: "La gerencia necesita un estudio que determine la viabilidad y el potencial de ese lote para un nuevo centro comercial. Tu trabajo como analista es estructurar y resolver el estudio, presentando hallazgos concretos en cada capítulo y una recomendación final sustentada al cliente.",
+};
+
+const WEIGHTS = { cap1: 1.17, cap2: 1.17, cap3: 1.16, cap4: 1.5 };
+
+const COMPETITOR_DATA = [
+  { n: 1, cc: "Cerritos Mall", pob: "14.795", hog: "6.064", ing: "16.020.557", ac: "34.000", gla: "12.000", pgla: "35,29%", loc: 90, par: 300, niv: 12 },
+  { n: 2, cc: "Paseo del Prado", pob: "21.765", hog: "8.920", ing: "14.689.906", ac: "50.000", gla: "22.000", pgla: "44,00%", loc: 143, par: 500, niv: 4 },
+  { n: 3, cc: "Unicentro", pob: "191.443", hog: "78.464", ing: "5.297.069", ac: "62.577", gla: "43.000", pgla: "68,72%", loc: 173, par: 700, niv: 3 },
+  { n: 4, cc: "Bolívar Plaza", pob: "292.189", hog: "117.967", ing: "6.751.949", ac: "15.000", gla: "3.500", pgla: "23,33%", loc: 75, par: 150, niv: 2 },
+  { n: 5, cc: "Victoria Plaza", pob: "299.395", hog: "120.890", ing: "6.687.884", ac: "35.000", gla: "15.000", pgla: "42,86%", loc: 180, par: 350, niv: 5 },
+  { n: 6, cc: "Pereira Plaza", pob: "302.592", hog: "122.331", ing: "6.538.780", ac: "31.000", gla: "13.428", pgla: "43,32%", loc: 194, par: 400, niv: 3 },
+  { n: 7, cc: "Parque Arboleda", pob: "287.080", hog: "115.655", ing: "6.215.589", ac: "108.000", gla: "41.000", pgla: "37,96%", loc: 162, par: 720, niv: 4 },
+  { n: 8, cc: "Único Outlet", pob: "288.083", hog: "114.046", ing: "5.255.778", ac: "25.000", gla: "10.236", pgla: "40,94%", loc: 80, par: 300, niv: 1 },
+  { n: 9, cc: "El Progreso", pob: "227.963", hog: "88.836", ing: "3.798.858", ac: "28.000", gla: "14.159", pgla: "50,57%", loc: 153, par: 500, niv: 1 },
+  { n: 10, cc: "Tacuará", pob: "172.199", hog: "66.763", ing: "4.023.447", ac: "16.500", gla: "11.000", pgla: "66,67%", loc: 53, par: 159, niv: 12 },
+];
+
+const STRATA = [
+  { c: "#a855f7", n: "Estrato 1" }, { c: "#3b82f6", n: "Estrato 2" }, { c: "#22d3ee", n: "Estrato 3" },
+  { c: "#22c55e", n: "Estrato 4" }, { c: "#eab308", n: "Estrato 5" }, { c: "#ef4444", n: "Estrato 6" },
+];
+
+const SECTIONS = [
+  {
+    id: "cap1", short: "Cap. 1", title: "Análisis del entorno", icon: Layers,
+    intro: "Antes de evaluar el lote, el cliente necesita entender el entorno en el que se ubicaría el centro comercial. Redacta tus respuestas con tu propio criterio.",
+    questions: [
+      { id: "c1q1", q: "¿Qué variables SOCIODEMOGRÁFICAS analizarías para definir el área de influencia del centro comercial y por qué? Redacta tu respuesta." },
+      { id: "c1q2", q: "Realiza un análisis de los principales ESTRUCTURANTES URBANOS de la ciudad: ¿cuáles tendrías en cuenta y, en este proyecto específico, cómo afectan su desarrollo?" },
+    ],
+    findings: { prompt: "HALLAZGOS DEL CAPÍTULO 1 — Resume los principales hallazgos del análisis del entorno: ¿qué te dice el entorno sobre el potencial del lote?", hint: "No repitas el método; concluye qué encontraste y qué implica para la decisión." },
+  },
+  {
+    id: "cap2", short: "Cap. 2", title: "Análisis de la competencia", icon: Search, gated: true,
+    intro: "Un nuevo centro comercial no llega a un mercado vacío. Primero define tu enfoque competitivo; al responder las dos primeras preguntas se habilitará la información del mercado para tu análisis macro.",
+    questions: [
+      { id: "c2q1", q: "¿Cuál es el FORMATO COMERCIAL que evaluarías para considerarlo competidor y bajo qué criterios lo harías? (máx. 200 palabras)", max: 200 },
+      { id: "c2q2", q: "¿Qué ASPECTOS evaluarías de ese competidor? Elabora un listado de los 5 componentes principales.", list: true },
+      { id: "c2q3", q: "Con base en la TABLA de competidores y la UBICACIÓN de cada uno en el mapa, realiza un análisis MACRO del comportamiento de la competencia." },
+    ],
+    findings: { prompt: "HALLAZGOS DEL CAPÍTULO 2 — Resume los principales hallazgos sobre la competencia: ¿qué tan competido está el mercado y dónde habría espacio para el proyecto?", hint: "Concluye con una lectura clara del panorama competitivo." },
+  },
+  {
+    id: "cap3", short: "Cap. 3", title: "Análisis de oportunidades (DOFA del lote)", icon: Target,
+    intro: "Aquí pasamos al lote específico. Te pedimos construir un análisis DOFA del lote: sus Fortalezas y Debilidades (internas) y sus Oportunidades y Amenazas (externas), para entender qué tan apto es para el proyecto.",
+    questions: [
+      { id: "c3q1", q: "FORTALEZAS del lote — ¿Qué características internas del lote jugarían a favor del proyecto? Sustenta cada una." },
+      { id: "c3q2", q: "DEBILIDADES del lote — ¿Qué limitaciones internas del lote podrían afectar el proyecto? Sé crítico y específico." },
+      { id: "c3q3", q: "OPORTUNIDADES — ¿Qué factores externos del entorno y del mercado podría aprovechar el proyecto en este lote?" },
+      { id: "c3q4", q: "AMENAZAS — ¿Qué factores externos podrían poner en riesgo el éxito del proyecto en este lote?" },
+    ],
+    findings: { prompt: "HALLAZGOS DEL CAPÍTULO 3 — A partir del DOFA, ¿qué te dice el balance global sobre la aptitud del lote? Cruza factores si es posible (ej. cómo una fortaleza ayuda a aprovechar una oportunidad).", hint: "Aquí esperamos pensamiento estratégico: el DOFA no es una lista, es una base para decidir." },
+  },
+  {
+    id: "cap4", short: "Cap. 4", title: "Conclusiones y recomendación", icon: Trophy,
+    intro: "El cliente necesita una decisión, no solo análisis. Aquí evaluamos tu capacidad de integrar los tres capítulos anteriores en una síntesis clara y una recomendación sustentada. Este capítulo es el de mayor peso en la evaluación.",
+    questions: [
+      { id: "c4q1", q: "SÍNTESIS — Integra los hallazgos del entorno, la competencia y el DOFA del lote en una lectura unificada. ¿Qué historia cuentan en conjunto?", hint: "Conecta los capítulos; no los repitas por separado." },
+      { id: "c4q2", q: "RECOMENDACIÓN — ¿Recomiendas o no desarrollar el centro comercial en este lote? Toma posición (sí / no / condicionada) y sustenta con los hallazgos clave.", hint: "Una conclusión ambigua no le sirve al cliente. Si es condicionada, di bajo qué condiciones." },
+      { id: "c4q3", q: "PRÓXIMOS PASOS — ¿Qué 3 acciones recomendarías al cliente para validar o avanzar con la decisión, en qué orden y con qué objetivo?", hint: "Orientación a la acción y a la validación de los supuestos más críticos." },
+    ],
+  },
+];
+
+const RUBRIC = [
+  { c: "Cap. 1 — Entorno", w: WEIGHTS.cap1, criterios: ["Profundidad de las variables sociodemográficas", "Análisis de estructurantes urbanos y su efecto en el proyecto", "Claridad de los hallazgos"] },
+  { c: "Cap. 2 — Competencia", w: WEIGHTS.cap2, criterios: ["Definición de formato comercial competidor y criterios", "Selección de 5 aspectos clave de evaluación", "Análisis macro (datos de la tabla + ubicación)", "Claridad de los hallazgos"] },
+  { c: "Cap. 3 — DOFA del lote", w: WEIGHTS.cap3, criterios: ["Fortalezas y debilidades realistas y específicas", "Oportunidades y amenazas bien identificadas", "Pensamiento estratégico (cruce de factores)", "Claridad de los hallazgos"] },
+  { c: "Cap. 4 — Conclusiones", w: WEIGHTS.cap4, criterios: ["Capacidad de síntesis integradora", "Recomendación clara, sustentada y accionable", "Calidad de los próximos pasos"] },
+];
+const TRANSVERSAL = ["Pensamiento crítico y analítico", "Estructura y orden del razonamiento", "Claridad de redacción", "Orientación al negocio del cliente", "Uso de supuestos y manejo de incertidumbre"];
+
+const sectionIds = (s) => [...s.questions.map((q) => q.id), ...(s.findings ? [s.id + "_hall"] : [])];
+const ALL_QIDS = SECTIONS.flatMap((s) => sectionIds(s));
+const STORE_KEY = "prueba_cc_pereira_v3";
+
+function App() {
+  const [active, setActive] = useState("inicio");
+  const [answers, setAnswers] = useState({});
+  const [candidate, setCandidate] = useState("");
+  const [evaluator, setEvaluator] = useState(false);
+  const [scores, setScores] = useState({});
+  const [evalNotes, setEvalNotes] = useState("");
+  const [saved, setSaved] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitResult, setSubmitResult] = useState(null);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORE_KEY);
+      if (raw) { const d = JSON.parse(raw); setAnswers(d.answers || {}); setCandidate(d.candidate || ""); setScores(d.scores || {}); setEvalNotes(d.evalNotes || ""); }
+    } catch (e) {}
+  }, []);
+
+  const persist = (next) => {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(next)); setSaved(true); setTimeout(() => setSaved(false), 1200); } catch (e) {}
+  };
+  const update = (patch) => {
+    const next = { answers, candidate, scores, evalNotes, ...patch };
+    setAnswers(next.answers); setCandidate(next.candidate); setScores(next.scores); setEvalNotes(next.evalNotes);
+    persist(next);
+  };
+  const setAnswer = (id, val) => update({ answers: { ...answers, [id]: val } });
+
+  const answered = ALL_QIDS.filter((id) => (answers[id] || "").trim().length > 0).length;
+  const pct = Math.round((answered / ALL_QIDS.length) * 100);
+  const wc = (t) => (t || "").trim().split(/\s+/).filter(Boolean).length;
+
+  const chapterScore = (s) => {
+    const ids = sectionIds(s);
+    const vals = ids.map((id) => scores[id]).filter((v) => typeof v === "number");
+    if (!vals.length) return null;
+    return (vals.reduce((a, b) => a + b, 0) / vals.length / 5) * WEIGHTS[s.id];
+  };
+
+  const buildSummary = () => {
+    let out = "PRUEBA DE CASO — NUEVO CENTRO COMERCIAL EN PEREIRA\nCandidato: " + (candidate || "(sin nombre)") + "\nFecha: " + new Date().toLocaleString("es-CO") + "\nLote: 10.000 m2 (desarrollable en altura) · GLA estimada 30.000 m2 · 200 locales\n" + "=".repeat(50) + "\n";
+    SECTIONS.forEach((s) => {
+      out += "\n\n" + s.title.toUpperCase() + "\n" + "-".repeat(40) + "\n";
+      s.questions.forEach((q, i) => { out += "\n" + (i + 1) + ". " + q.q + "\nRESPUESTA:\n" + (answers[q.id] || "(sin responder)") + "\n"; });
+      if (s.findings) out += "\n>> " + s.findings.prompt + "\n" + (answers[s.id + "_hall"] || "(sin responder)") + "\n";
+    });
+    return out;
+  };
+  const exportText = () => navigator.clipboard && navigator.clipboard.writeText(buildSummary());
+
+  const submit = async () => {
+    setSubmitResult(null);
+    if (!candidate.trim()) { setSubmitResult({ ok: false, msg: "Por favor escribe tu nombre en el Inicio antes de enviar." }); return; }
+    if (answered < ALL_QIDS.length) { if (!window.confirm("Tienes " + (ALL_QIDS.length - answered) + " campo(s) sin responder. ¿Enviar de todas formas?")) return; }
+    setSubmitting(true);
+    const payload = { Candidato: candidate, Fecha: new Date().toLocaleString("es-CO"), _subject: "Prueba CC Pereira — " + candidate };
+    SECTIONS.forEach((s) => {
+      let block = "";
+      s.questions.forEach((q, i) => { block += (i + 1) + ". " + q.q + "\n" + (answers[q.id] || "(sin responder)") + "\n\n"; });
+      if (s.findings) block += "HALLAZGOS:\n" + (answers[s.id + "_hall"] || "(sin responder)");
+      payload[s.title] = block;
+    });
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(payload) });
+      if (res.ok) setSubmitResult({ ok: true, msg: "¡Prueba enviada con éxito! El reclutador recibirá tus respuestas por correo." });
+      else { const d = await res.json().catch(() => ({})); setSubmitResult({ ok: false, msg: (d && d.errors && d.errors[0] && d.errors[0].message) || "No se pudo enviar." }); }
+    } catch (e) { setSubmitResult({ ok: false, msg: "Error de conexión al enviar. Intenta de nuevo." }); }
+    setSubmitting(false);
+  };
+
+  const activeSection = SECTIONS.find((s) => s.id === active);
+
+  const renderQuestion = (q, i) => {
+    const max = q.max || MAX_WORDS;
+    const count = wc(answers[q.id]);
+    const over = !q.list && count > max;
+    const placeholder = q.list ? "Escribe tu listado de 5 componentes (uno por línea)..." : ("Escribe aquí tu respuesta (máx. " + max + " palabras)...");
+    return (
+      <Card key={q.id}>
+        <div className="flex gap-3">
+          <div className="flex-shrink-0 w-7 h-7 rounded-full bg-slate-900 text-white text-sm font-bold flex items-center justify-center">{i + 1}</div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-slate-900 leading-relaxed">{q.q}</p>
+            {q.hint && <p className="text-xs text-slate-400 italic mt-1.5">💡 {q.hint}</p>}
+            <textarea value={answers[q.id] || ""} onChange={(e) => setAnswer(q.id, e.target.value)} placeholder={placeholder} rows={6} className={"mt-3 w-full border rounded-lg px-3 py-2.5 text-sm leading-relaxed focus:outline-none focus:ring-2 resize-y " + (over ? "border-red-400 focus:ring-red-400" : "border-slate-200 focus:ring-amber-400")} />
+            <div className="flex items-center justify-between mt-1.5"><span className={"text-[11px] " + (over ? "text-red-600 font-semibold" : "text-slate-400")}>{q.list ? "Listado de 5 componentes" : (count + " / " + max + " palabras" + (over ? " · excede el límite" : ""))}</span>{(answers[q.id] || "").trim() && !over && <span className="text-[11px] text-emerald-600 flex items-center gap-1"><CheckCircle2 size={12} /> Respondida</span>}</div>
+            {evaluator && <ScoreRow id={q.id} scores={scores} update={update} />}
+          </div>
+        </div>
+      </Card>
+    );
+  };
+
+  const renderFindings = (s) => {
+    if (!s.findings) return null;
+    const fid = s.id + "_hall"; const count = wc(answers[fid]); const over = count > MAX_WORDS;
+    return (
+      <div className="bg-amber-50 rounded-xl p-5 border-2 border-amber-300">
+        <div className="flex items-center gap-2 mb-2"><Lightbulb size={18} className="text-amber-600" /><h3 className="font-bold text-amber-900 text-sm">Hallazgos del capítulo</h3></div>
+        <p className="text-sm text-amber-900 leading-relaxed">{s.findings.prompt}</p>
+        <p className="text-xs text-amber-700/80 italic mt-1.5">{s.findings.hint}</p>
+        <textarea value={answers[fid] || ""} onChange={(e) => setAnswer(fid, e.target.value)} placeholder="Escribe aquí tus hallazgos (máx. 300 palabras)..." rows={5} className={"mt-3 w-full bg-white rounded-lg px-3 py-2.5 text-sm leading-relaxed focus:outline-none focus:ring-2 resize-y border " + (over ? "border-red-400 focus:ring-red-400" : "border-amber-300 focus:ring-amber-500")} />
+        <div className="flex items-center justify-between mt-1.5"><span className={"text-[11px] " + (over ? "text-red-600 font-semibold" : "text-amber-700/70")}>{count} / {MAX_WORDS} palabras{over ? " · excede el límite" : ""}</span>{(answers[fid] || "").trim() && !over && <span className="text-[11px] text-emerald-600 flex items-center gap-1"><CheckCircle2 size={12} /> Completado</span>}</div>
+        {evaluator && <ScoreRow id={fid} scores={scores} update={update} amber />}
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-800">
+      <div className="bg-slate-900 text-white">
+        <div className="max-w-6xl mx-auto px-5 py-5 flex items-center justify-between flex-wrap gap-3">
+          <div className="flex items-center gap-3"><div className="bg-amber-500 rounded-lg p-2"><Building2 size={22} className="text-slate-900" /></div><div><h1 className="text-lg font-bold leading-tight">Prueba de Caso de Estudio</h1><p className="text-slate-300 text-xs flex items-center gap-1"><MapPin size={12} /> Nuevo centro comercial en Pereira</p></div></div>
+          <button onClick={() => setEvaluator((v) => !v)} className={"flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full transition " + (evaluator ? "bg-amber-500 text-slate-900" : "bg-slate-700 text-slate-200 hover:bg-slate-600")}>{evaluator ? <Unlock size={13} /> : <Lock size={13} />}{evaluator ? "Modo evaluador" : "Modo candidato"}</button>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-5 py-6 grid md:grid-cols-[240px_1fr] gap-6">
+        <aside className="space-y-2">
+          <div className="bg-white rounded-xl p-3 shadow-sm border border-slate-100 mb-3">
+            <div className="flex items-center justify-between text-xs text-slate-500 mb-1.5"><span>Progreso</span><span className="font-semibold text-slate-700">{pct}%</span></div>
+            <div className="h-2 bg-slate-100 rounded-full overflow-hidden"><div className="h-full bg-amber-500 transition-all" style={{ width: pct + "%" }} /></div>
+            <p className="text-[11px] text-slate-400 mt-1.5">{answered}/{ALL_QIDS.length} campos</p>
+          </div>
+          <NavItem icon={FileText} label="Inicio / Brief" id="inicio" active={active} set={setActive} />
+          {SECTIONS.map((s) => { const done = sectionIds(s).every((id) => (answers[id] || "").trim()); return <NavItem key={s.id} icon={s.icon} label={s.short + " · " + s.title} id={s.id} active={active} set={setActive} done={done} />; })}
+          <NavItem icon={Send} label="Enviar prueba" id="enviar" active={active} set={setActive} />
+          {evaluator && <NavItem icon={ClipboardCheck} label="Rúbrica" id="rubrica" active={active} set={setActive} />}
+          <button onClick={exportText} className="w-full mt-3 flex items-center justify-center gap-2 text-xs bg-slate-100 text-slate-700 py-2.5 rounded-lg hover:bg-slate-200 transition"><Download size={14} /> Copiar respuestas</button>
+          {saved && <p className="text-[11px] text-emerald-600 text-center mt-1">✓ Guardado automático</p>}
+        </aside>
+
+        <main className="min-w-0">
+          {active === "inicio" && (
+            <div className="space-y-5">
+              <Card>
+                <div className="flex items-start gap-3"><div className="bg-amber-100 rounded-lg p-2 mt-0.5"><FileText size={20} className="text-amber-700" /></div><div><h2 className="text-xl font-bold text-slate-900">Brief del caso</h2><p className="text-sm text-slate-500">Lee atentamente antes de comenzar</p></div></div>
+                <div className="mt-4 space-y-3 text-sm leading-relaxed text-slate-700">
+                  <p><span className="font-semibold text-slate-900">Tu rol:</span> Eres analista junior en una firma de investigación de mercados. Un cliente desarrollador te ha encargado evaluar un lote para un nuevo centro comercial; debes estructurar y resolver el caso demostrando tu razonamiento.</p>
+                  <div className="bg-slate-50 border border-slate-100 rounded-lg p-4"><p className="font-semibold text-slate-900 mb-1">Cliente: {BRIEF.cliente}</p><p>{BRIEF.contexto}</p><p className="mt-2">{BRIEF.encargo}</p></div>
+                </div>
+              </Card>
+
+              <Card>
+                <div className="flex items-center gap-2 mb-3"><MapPin size={18} className="text-amber-600" /><h3 className="font-bold text-slate-900">Ubicación y datos del proyecto</h3></div>
+                <p className="text-sm text-slate-600 mb-3">Consulta la ubicación exacta del proyecto en el mapa:</p>
+                <div className="flex flex-wrap gap-3">
+                  <a href={GMAP_LINK} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 bg-amber-500 text-slate-900 text-sm font-semibold px-4 py-2.5 rounded-lg hover:bg-amber-400 transition">Abrir en Google Maps ↗</a>
+                  <a href={OSM_LINK} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 bg-white border border-slate-300 text-slate-700 text-sm font-semibold px-4 py-2.5 rounded-lg hover:bg-slate-50 transition">Abrir en OpenStreetMap ↗</a>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-2 mt-4 text-sm">
+                  <div className="flex items-start gap-2 bg-slate-50 border border-slate-100 rounded-lg px-3 py-2"><MapPin size={16} className="text-slate-400 mt-0.5" /><div><p className="font-semibold text-slate-900">Coordenadas</p><p className="text-slate-600">{COORDS.lat}, {COORDS.lng}</p></div></div>
+                  <div className="flex items-start gap-2 bg-slate-50 border border-slate-100 rounded-lg px-3 py-2"><Ruler size={16} className="text-slate-400 mt-0.5" /><div><p className="font-semibold text-slate-900">Extensión del lote</p><p className="text-slate-600">10.000 m² de huella · desarrollable en altura</p></div></div>
+                  <div className="flex items-start gap-2 bg-slate-50 border border-slate-100 rounded-lg px-3 py-2"><Building2 size={16} className="text-slate-400 mt-0.5" /><div><p className="font-semibold text-slate-900">GLA estimada del proyecto</p><p className="text-slate-600">30.000 m² de GLA</p></div></div>
+                  <div className="flex items-start gap-2 bg-slate-50 border border-slate-100 rounded-lg px-3 py-2"><Table2 size={16} className="text-slate-400 mt-0.5" /><div><p className="font-semibold text-slate-900">Locales comerciales</p><p className="text-slate-600">200 locales (estimado)</p></div></div>
+                </div>
+              </Card>
+
+              <Card>
+                <div className="flex items-center gap-2 mb-3"><ClipboardCheck size={18} className="text-amber-600" /><h3 className="font-bold text-slate-900">Método de evaluación</h3></div>
+                <p className="text-sm text-slate-600 mb-3">Cada capítulo se califica en una escala de <span className="font-semibold">1 a 5</span> y aporta un peso a la nota final, que también está expresada sobre 5. El capítulo de conclusiones es el de mayor peso.</p>
+                <div className="overflow-x-auto"><table className="w-full text-sm border border-slate-200 rounded-lg overflow-hidden"><thead><tr className="bg-slate-900 text-white text-left"><th className="px-3 py-2 font-semibold">Capítulo</th><th className="px-3 py-2 font-semibold text-center">Escala</th><th className="px-3 py-2 font-semibold text-center">Peso (sobre 5)</th></tr></thead><tbody>{[["1. Análisis del entorno", WEIGHTS.cap1], ["2. Análisis de la competencia", WEIGHTS.cap2], ["3. Oportunidades (DOFA del lote)", WEIGHTS.cap3], ["4. Conclusiones y recomendación", WEIGHTS.cap4]].map((row, i) => (<tr key={i} className={i % 2 ? "bg-slate-50" : "bg-white"}><td className="px-3 py-2 text-slate-700">{row[0]}</td><td className="px-3 py-2 text-center text-slate-500">1 – 5</td><td className="px-3 py-2 text-center font-semibold text-slate-900">{row[1].toFixed(2)}</td></tr>))}<tr className="bg-amber-50 border-t-2 border-amber-300"><td className="px-3 py-2 font-bold text-amber-900">Total</td><td className="px-3 py-2"></td><td className="px-3 py-2 text-center font-bold text-amber-900">5.00</td></tr></tbody></table></div>
+              </Card>
+
+              <Card>
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start gap-3"><Brain size={20} className="text-amber-600 mt-0.5 flex-shrink-0" /><div className="text-sm text-amber-900"><p className="font-semibold">Se evalúa especialmente el pensamiento crítico y analítico.</p><p className="mt-1">No buscamos respuestas memorizadas: queremos ver cómo estructuras el problema, qué supuestos haces, cómo conectas evidencia con conclusiones y qué tan riguroso es tu razonamiento.</p></div></div>
+                <div className="grid sm:grid-cols-2 gap-4 text-sm mt-4">
+                  <div className="flex items-start gap-2"><Clock size={18} className="text-slate-400 mt-0.5" /><div><p className="font-semibold text-slate-900">Tiempo sugerido</p><p className="text-slate-600">3 a 4 horas. Valoramos la calidad del razonamiento.</p></div></div>
+                  <div className="flex items-start gap-2"><AlertCircle size={18} className="text-slate-400 mt-0.5" /><div><p className="font-semibold text-slate-900">Extensión</p><p className="text-slate-600">Respeta el límite indicado en cada pregunta.</p></div></div>
+                </div>
+                <div className="mt-4 pt-4 border-t border-slate-100"><label className="text-sm font-semibold text-slate-900 flex items-center gap-1.5 mb-1.5"><User size={15} /> Nombre del candidato</label><input value={candidate} onChange={(e) => update({ candidate: e.target.value })} placeholder="Escribe tu nombre completo" className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" /></div>
+                <p className="text-xs text-slate-500 mt-3 flex items-start gap-1.5"><Mail size={14} className="mt-0.5 flex-shrink-0" /> Al terminar, ve a <span className="font-semibold">"Enviar prueba"</span> para remitir tus respuestas al reclutador.</p>
+                <button onClick={() => setActive("cap1")} className="mt-4 flex items-center gap-2 bg-amber-500 text-slate-900 font-semibold text-sm px-5 py-2.5 rounded-lg hover:bg-amber-400 transition">Comenzar Capítulo 1 <ChevronRight size={16} /></button>
+              </Card>
+            </div>
+          )}
+
+          {activeSection && (
+            <div className="space-y-5">
+              <Card>
+                <div className="flex items-center justify-between gap-3 flex-wrap">
+                  <div className="flex items-center gap-3"><div className="bg-amber-100 rounded-lg p-2"><activeSection.icon size={22} className="text-amber-700" /></div><div><p className="text-xs font-semibold text-amber-600 uppercase tracking-wide">{activeSection.short}</p><h2 className="text-xl font-bold text-slate-900">{activeSection.title}</h2></div></div>
+                  <span className="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full">Peso: {WEIGHTS[activeSection.id].toFixed(2)} / 5</span>
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">{activeSection.intro}</p>
+              </Card>
+
+              {activeSection.gated ? (() => {
+                const unlocked = (answers["c2q1"] || "").trim() && (answers["c2q2"] || "").trim();
+                return (
+                  <>
+                    {renderQuestion(activeSection.questions[0], 0)}
+                    {renderQuestion(activeSection.questions[1], 1)}
+                    {unlocked ? (
+                      <>
+                        <CompetitorTable />
+                        <MapBlock />
+                        {renderQuestion(activeSection.questions[2], 2)}
+                        {renderFindings(activeSection)}
+                      </>
+                    ) : (
+                      <div className="bg-slate-100 border-2 border-dashed border-slate-300 rounded-xl p-6 text-center">
+                        <Lock size={28} className="text-slate-400 mx-auto mb-2" />
+                        <p className="text-sm font-semibold text-slate-700">Información del mercado bloqueada</p>
+                        <p className="text-sm text-slate-500 mt-1">Responde las dos preguntas anteriores para desbloquear la tabla de competidores, el mapa georreferenciado y el análisis macro.</p>
+                      </div>
+                    )}
+                  </>
+                );
+              })() : (
+                <>
+                  {activeSection.questions.map((q, i) => renderQuestion(q, i))}
+                  {renderFindings(activeSection)}
+                </>
+              )}
+
+              <div className="flex justify-between">
+                {(() => { const idx = SECTIONS.findIndex((s) => s.id === active); return (<><button onClick={() => setActive(idx === 0 ? "inicio" : SECTIONS[idx - 1].id)} className="text-sm text-slate-500 hover:text-slate-800 px-4 py-2">← Anterior</button><button onClick={() => setActive(idx < SECTIONS.length - 1 ? SECTIONS[idx + 1].id : "enviar")} className="flex items-center gap-1.5 text-sm bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800">{idx < SECTIONS.length - 1 ? "Siguiente" : "Ir a enviar"} <ChevronRight size={15} /></button></>); })()}
+              </div>
+            </div>
+          )}
+
+          {active === "enviar" && (
+            <div className="space-y-5">
+              <Card>
+                <div className="flex items-center gap-3"><div className="bg-amber-100 rounded-lg p-2"><Send size={22} className="text-amber-700" /></div><div><h2 className="text-xl font-bold text-slate-900">Enviar prueba</h2><p className="text-sm text-slate-500">Revisa antes de remitir tus respuestas</p></div></div>
+                <div className="mt-4 grid sm:grid-cols-2 gap-3 text-sm">
+                  <div className="bg-slate-50 border border-slate-100 rounded-lg px-3 py-2.5"><p className="text-slate-500 text-xs">Candidato</p><p className="font-semibold text-slate-900">{candidate || "— sin nombre —"}</p></div>
+                  <div className="bg-slate-50 border border-slate-100 rounded-lg px-3 py-2.5"><p className="text-slate-500 text-xs">Avance</p><p className="font-semibold text-slate-900">{answered}/{ALL_QIDS.length} campos ({pct}%)</p></div>
+                </div>
+                <div className="mt-3 space-y-1.5">{SECTIONS.map((s) => { const done = sectionIds(s).every((id) => (answers[id] || "").trim()); return (<div key={s.id} className="flex items-center justify-between text-sm bg-white border border-slate-100 rounded-lg px-3 py-2"><span className="text-slate-700">{s.title}</span>{done ? <span className="text-emerald-600 flex items-center gap-1 text-xs"><CheckCircle2 size={14} /> Completo</span> : <span className="text-amber-600 flex items-center gap-1 text-xs"><AlertCircle size={14} /> Incompleto</span>}</div>); })}</div>
+                <button onClick={submit} disabled={submitting} className="mt-5 w-full flex items-center justify-center gap-2 bg-amber-500 text-slate-900 font-semibold text-sm px-5 py-3 rounded-lg hover:bg-amber-400 transition disabled:opacity-60">{submitting ? <><Loader size={16} className="animate-spin" /> Enviando...</> : <><Send size={16} /> Enviar mis respuestas</>}</button>
+                {submitResult && (<div className={"mt-3 rounded-lg p-3 text-sm flex items-start gap-2 " + (submitResult.ok ? "bg-emerald-50 text-emerald-800 border border-emerald-200" : "bg-red-50 text-red-700 border border-red-200")}>{submitResult.ok ? <CheckCircle2 size={16} className="mt-0.5 flex-shrink-0" /> : <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />}<span>{submitResult.msg}</span></div>)}
+                <p className="text-xs text-slate-400 mt-3">Si el envío falla, usa "Copiar respuestas" en el menú lateral y compártelas manualmente.</p>
+              </Card>
+            </div>
+          )}
+
+          {active === "rubrica" && evaluator && (
+            <div className="space-y-5">
+              <Card><div className="flex items-center gap-3"><div className="bg-amber-100 rounded-lg p-2"><ClipboardCheck size={22} className="text-amber-700" /></div><div><h2 className="text-xl font-bold text-slate-900">Rúbrica de evaluación</h2><p className="text-sm text-slate-500">Uso interno · escala 1–5 ponderada sobre 5</p></div></div></Card>
+              {RUBRIC.map((r, i) => { const cs = chapterScore(SECTIONS[i]); return (<Card key={i}><div className="flex items-center justify-between mb-2"><h3 className="font-bold text-slate-900">{r.c}</h3><span className="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full">Peso {r.w.toFixed(2)}{cs != null ? (" · " + cs.toFixed(2)) : ""}</span></div><ul className="space-y-1.5">{r.criterios.map((c, j) => <li key={j} className="flex items-start gap-2 text-sm text-slate-600"><Circle size={6} className="text-amber-500 mt-1.5 flex-shrink-0 fill-amber-500" />{c}</li>)}</ul></Card>); })}
+              <Card><h3 className="font-bold text-slate-900 mb-2">Criterios transversales</h3><div className="grid sm:grid-cols-2 gap-2">{TRANSVERSAL.map((t, i) => <div key={i} className="flex items-start gap-2 text-sm text-slate-600 bg-slate-50 rounded-lg px-3 py-2 border border-slate-100"><Circle size={6} className="text-slate-400 mt-1.5 flex-shrink-0 fill-slate-400" />{t}</div>)}</div></Card>
+              <Card><h3 className="font-bold text-slate-900 mb-2">Notas del evaluador</h3><textarea value={evalNotes} onChange={(e) => update({ evalNotes: e.target.value })} rows={5} placeholder="Observaciones generales sobre el candidato..." className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 resize-y" />{(() => { const total = SECTIONS.reduce((acc, s) => acc + (chapterScore(s) || 0), 0); return (<div className="mt-3 bg-slate-900 text-white rounded-lg p-4 flex items-center justify-between"><span className="text-sm">Nota final ponderada</span><span className="text-2xl font-bold text-amber-400">{total.toFixed(2)} <span className="text-slate-400 text-sm font-normal">/ 5.00</span></span></div>); })()}</Card>
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  );
+}
+
+function CompetitorTable() {
+  const cols = ["#", "Centro Comercial", "Pob. 3km", "Hogares 3km", "Ingreso/hogar mes", "Área Constr. (m²)", "GLA (m²)", "%GLA", "#Locales", "Parqueo", "Niveles"];
+  return (
+    <Card>
+      <div className="flex items-center gap-2 mb-3"><Table2 size={18} className="text-amber-600" /><h3 className="font-bold text-slate-900">Tabla competitiva — centros comerciales de Pereira</h3></div>
+      <div className="overflow-x-auto -mx-1">
+        <table className="w-full text-xs border border-slate-200 rounded-lg overflow-hidden whitespace-nowrap">
+          <thead><tr className="bg-slate-900 text-white text-left">{cols.map((c, i) => <th key={i} className={"px-2.5 py-2 font-semibold " + (i > 1 ? "text-right" : "")}>{c}</th>)}</tr></thead>
+          <tbody>
+            {COMPETITOR_DATA.map((r, i) => (
+              <tr key={r.n} className={i % 2 ? "bg-slate-50" : "bg-white"}>
+                <td className="px-2.5 py-2 text-slate-400">{r.n}</td>
+                <td className="px-2.5 py-2 font-semibold text-slate-800">{r.cc}</td>
+                <td className="px-2.5 py-2 text-right text-slate-600">{r.pob}</td>
+                <td className="px-2.5 py-2 text-right text-slate-600">{r.hog}</td>
+                <td className="px-2.5 py-2 text-right text-slate-600">${r.ing}</td>
+                <td className="px-2.5 py-2 text-right text-slate-600">{r.ac}</td>
+                <td className="px-2.5 py-2 text-right text-slate-600">{r.gla}</td>
+                <td className="px-2.5 py-2 text-right font-medium text-amber-700">{r.pgla}</td>
+                <td className="px-2.5 py-2 text-right text-slate-600">{r.loc}</td>
+                <td className="px-2.5 py-2 text-right text-slate-600">{r.par}</td>
+                <td className="px-2.5 py-2 text-right text-slate-600">{r.niv}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="text-[11px] text-slate-400 mt-2">Población e ingreso medidos en un radio de 3 km. Ingreso promedio por hogar/mes en pesos colombianos.</p>
+    </Card>
+  );
+}
+
+function MapBlock() {
+  const [imgError, setImgError] = useState(false);
+  const showImg = MAP_COMPETIDORES_URL && !imgError;
+  return (
+    <Card>
+      <div className="flex items-center gap-2 mb-3"><MapPin size={18} className="text-amber-600" /><h3 className="font-bold text-slate-900">Georreferenciación de los competidores</h3></div>
+      {showImg ? (
+        <>
+          <img src={MAP_COMPETIDORES_URL} alt="Mapa de georreferenciación de competidores en Pereira" className="w-full rounded-lg border border-slate-200" onError={() => setImgError(true)} />
+          <a href={MAP_COMPETIDORES_URL} target="_blank" rel="noreferrer" className="text-xs text-amber-700 hover:underline mt-2 inline-block">Ver mapa en tamaño completo ↗</a>
+        </>
+      ) : (
+        <div className="bg-slate-900 rounded-lg border-2 border-dashed border-slate-600 p-6 text-center">
+          <MapPin size={26} className="text-slate-500 mx-auto mb-2" />
+          <p className="text-sm text-slate-300 font-medium">Mapa de georreferenciación de competidores</p>
+          <a href={MAP_COMPETIDORES_URL} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1.5 bg-amber-500 text-slate-900 text-sm font-semibold px-4 py-2 rounded-lg hover:bg-amber-400 transition">Abrir mapa georreferenciado ↗</a>
+        </div>
+      )}
+      <div className="mt-4 bg-slate-50 border border-slate-100 rounded-lg p-3">
+        <p className="text-xs font-semibold text-slate-700 mb-2">Convención de estratos socioeconómicos</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          {STRATA.map((s) => (
+            <div key={s.n} className="flex items-center gap-2 text-xs text-slate-600">
+              <span className="w-4 h-4 rounded border border-slate-300 flex-shrink-0" style={{ background: s.c }} />
+              {s.n}
+            </div>
+          ))}
+        </div>
+      </div>
+      <p className="text-[11px] text-slate-400 mt-2">Cruza la ubicación y el estrato de cada zona con los datos de la tabla para tu análisis macro.</p>
+    </Card>
+  );
+}
+
+function ScoreRow({ id, scores, update, amber }) {
+  return (
+    <div className={"mt-3 rounded-lg p-3 border " + (amber ? "bg-white border-amber-200" : "bg-amber-50 border-amber-200")}>
+      <p className="text-xs font-semibold text-amber-800 mb-1.5">Puntaje (evaluador) · 1 a 5</p>
+      <div className="flex gap-1.5">{[1, 2, 3, 4, 5].map((n) => (<button key={n} onClick={() => update({ scores: { ...scores, [id]: n } })} className={"w-8 h-8 rounded-md text-sm font-semibold transition " + (scores[id] === n ? "bg-amber-500 text-white" : "bg-white text-slate-500 border border-amber-200 hover:bg-amber-100")}>{n}</button>))}</div>
+    </div>
+  );
+}
+
+function NavItem({ icon: Icon, label, id, active, set, done }) {
+  const isActive = active === id;
+  return (
+    <button onClick={() => set(id)} className={"w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-left transition " + (isActive ? "bg-slate-900 text-white" : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-100")}>
+      <Icon size={16} className={isActive ? "text-amber-400" : "text-slate-400"} />
+      <span className="flex-1 leading-tight">{label}</span>
+      {done && <CheckCircle2 size={14} className={isActive ? "text-amber-400" : "text-emerald-500"} />}
+    </button>
+  );
+}
+
+function Card({ children }) {
+  return <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">{children}</div>;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
