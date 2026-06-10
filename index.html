@@ -80,20 +80,22 @@ const CAP = {
     { id: "c2q1", q: "¿Cuál es el FORMATO COMERCIAL que evaluarías para considerarlo competidor y bajo qué criterios lo harías? (máx. 200 palabras)", max: 200 },
     { id: "c2q2", q: "¿Qué ASPECTOS evaluarías de ese competidor? Elabora un listado de los 5 componentes principales.", list: true },
     { id: "c2q3", q: "Con base en la TABLA de competidores y la UBICACIÓN de cada uno en el mapa, realiza un análisis MACRO del comportamiento de la competencia." },
-    { id: "c2q4", q: "Con base en los hallazgos de la competencia, si se pudiera cambiar la localización del proyecto, ¿en qué parte de la ciudad debería estar y por qué?" },
+    { id: "c2q4", q: "Con base en los hallazgos de la competencia, ¿consideras que el lote del proyecto está bien ubicado o debería estar en otra zona de la ciudad? Justifica tu respuesta." },
+    { id: "c2q5", q: "Además de la competencia, ¿qué otros componentes tendrías en cuenta al evaluar la idoneidad de un lote para un centro comercial? Enumera al menos 5 componentes y explica brevemente la relevancia de cada uno." },
   ],
 };
 
 const RUBRIC_CRITERIOS = [
   "Definición de formato comercial competidor y criterios",
-  "Selección de 5 aspectos clave de evaluación",
+  "Selección de 5 aspectos clave de evaluación del competidor",
   "Análisis macro del comportamiento competitivo (tabla + ubicación)",
-  "Propuesta de relocalización sustentada en los hallazgos",
+  "Evaluación de la ubicación del lote sustentada en los hallazgos",
+  "Identificación de al menos 5 componentes adicionales para evaluar un lote",
 ];
 const TRANSVERSAL = ["Pensamiento crítico y analítico", "Estructura y orden del razonamiento", "Claridad de redacción", "Orientación al negocio del cliente"];
 
 const ALL_QIDS = CAP.questions.map((q) => q.id);
-const STORE_KEY = "prueba_cc_pereira_v4";
+const STORE_KEY = "prueba_cc_pereira_v5";
 
 function App() {
   const [active, setActive] = useState("inicio");
@@ -233,8 +235,8 @@ function App() {
 
               <Card>
                 <div className="flex items-center gap-2 mb-3"><ClipboardCheck size={18} className="text-amber-600" /><h3 className="font-bold text-slate-900">Método de evaluación</h3></div>
-                <p className="text-sm text-slate-600 mb-3">La evaluación se determina por las <span className="font-semibold">4 preguntas</span> del análisis de competencia. Cada una se califica en una escala de <span className="font-semibold">1 a 5</span> y la nota final es el promedio, también sobre 5.</p>
-                <div className="overflow-x-auto"><table className="w-full text-sm border border-slate-200 rounded-lg overflow-hidden"><thead><tr className="bg-slate-900 text-white text-left"><th className="px-3 py-2 font-semibold">Pregunta</th><th className="px-3 py-2 font-semibold text-center">Escala</th></tr></thead><tbody>{["1. Formato comercial competidor y criterios", "2. Aspectos del competidor (listado de 5)", "3. Análisis macro del mercado", "4. Relocalización del proyecto"].map((n, i) => (<tr key={i} className={i % 2 ? "bg-slate-50" : "bg-white"}><td className="px-3 py-2 text-slate-700">{n}</td><td className="px-3 py-2 text-center text-slate-500">1 – 5</td></tr>))}<tr className="bg-amber-50 border-t-2 border-amber-300"><td className="px-3 py-2 font-bold text-amber-900">Nota final</td><td className="px-3 py-2 text-center font-bold text-amber-900">Promedio / 5</td></tr></tbody></table></div>
+                <p className="text-sm text-slate-600 mb-3">La evaluación se determina por las <span className="font-semibold">5 preguntas</span> del análisis de competencia. Cada una se califica de <span className="font-semibold">1 a 5</span> y tiene el mismo peso (1). La nota final es el promedio, sobre 5.</p>
+                <div className="overflow-x-auto"><table className="w-full text-sm border border-slate-200 rounded-lg overflow-hidden"><thead><tr className="bg-slate-900 text-white text-left"><th className="px-3 py-2 font-semibold">Pregunta</th><th className="px-3 py-2 font-semibold text-center">Escala</th><th className="px-3 py-2 font-semibold text-center">Peso</th></tr></thead><tbody>{["1. Formato comercial competidor y criterios", "2. Aspectos del competidor (listado de 5)", "3. Análisis macro del mercado", "4. Ubicación del lote (¿bien ubicado o reubicar?)", "5. Otros componentes para evaluar un lote"].map((n, i) => (<tr key={i} className={i % 2 ? "bg-slate-50" : "bg-white"}><td className="px-3 py-2 text-slate-700">{n}</td><td className="px-3 py-2 text-center text-slate-500">1 – 5</td><td className="px-3 py-2 text-center font-semibold text-slate-900">1</td></tr>))}<tr className="bg-amber-50 border-t-2 border-amber-300"><td className="px-3 py-2 font-bold text-amber-900">Nota final</td><td className="px-3 py-2"></td><td className="px-3 py-2 text-center font-bold text-amber-900">Prom. / 5</td></tr></tbody></table></div>
               </Card>
 
               <Card>
@@ -266,6 +268,7 @@ function App() {
                   <MapBlock />
                   {renderQuestion(CAP.questions[2], 2, false)}
                   {renderQuestion(CAP.questions[3], 3, false)}
+                  {renderQuestion(CAP.questions[4], 4, false)}
                 </>
               ) : (
                 <Card>
@@ -310,7 +313,7 @@ function App() {
 
           {active === "rubrica" && evaluator && (
             <div className="space-y-5">
-              <Card><div className="flex items-center gap-3"><div className="bg-amber-100 rounded-lg p-2"><ClipboardCheck size={22} className="text-amber-700" /></div><div><h2 className="text-xl font-bold text-slate-900">Rúbrica de evaluación</h2><p className="text-sm text-slate-500">Uso interno · escala 1–5 por pregunta</p></div></div></Card>
+              <Card><div className="flex items-center gap-3"><div className="bg-amber-100 rounded-lg p-2"><ClipboardCheck size={22} className="text-amber-700" /></div><div><h2 className="text-xl font-bold text-slate-900">Rúbrica de evaluación</h2><p className="text-sm text-slate-500">Uso interno · 5 preguntas · escala 1–5 · peso 1 c/u</p></div></div></Card>
               <Card>
                 <h3 className="font-bold text-slate-900 mb-2">Criterios por pregunta</h3>
                 <ul className="space-y-1.5">{RUBRIC_CRITERIOS.map((c, j) => <li key={j} className="flex items-start gap-2 text-sm text-slate-600"><span className="font-semibold text-amber-600">{j + 1}.</span>{c}</li>)}</ul>
@@ -322,7 +325,7 @@ function App() {
               <Card>
                 <h3 className="font-bold text-slate-900 mb-2">Notas del evaluador</h3>
                 <textarea value={evalNotes} onChange={(e) => update({ evalNotes: e.target.value })} rows={5} placeholder="Observaciones generales sobre el candidato..." className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 resize-y" />
-                {(() => { const fs = finalScore(); return (<div className="mt-3 bg-slate-900 text-white rounded-lg p-4 flex items-center justify-between"><span className="text-sm">Nota final (promedio de las 4 preguntas)</span><span className="text-2xl font-bold text-amber-400">{fs != null ? fs.toFixed(2) : "—"} <span className="text-slate-400 text-sm font-normal">/ 5.00</span></span></div>); })()}
+                {(() => { const fs = finalScore(); return (<div className="mt-3 bg-slate-900 text-white rounded-lg p-4 flex items-center justify-between"><span className="text-sm">Nota final (promedio de las 5 preguntas)</span><span className="text-2xl font-bold text-amber-400">{fs != null ? fs.toFixed(2) : "—"} <span className="text-slate-400 text-sm font-normal">/ 5.00</span></span></div>); })()}
               </Card>
             </div>
           )}
