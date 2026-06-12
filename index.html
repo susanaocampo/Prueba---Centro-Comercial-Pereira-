@@ -50,7 +50,7 @@ const MAX_WORDS = 300;
 const BRIEF = {
   cliente: "Inversiones Comerciales del Café S.A.S.",
   contexto: "Inversiones Comerciales del Café es un grupo desarrollador inmobiliario con experiencia en proyectos comerciales en el centro-occidente del país. El grupo evalúa el desarrollo de un nuevo centro comercial en Pereira y ya tiene identificado un lote candidato.",
-  encargo: "La gerencia necesita un estudio que determine el comportamiento de la competencia para un nuevo centro comercial. Tu trabajo como analista es resolver el análisis de competencia presentando hallazgos concretos y sustentados.",
+  encargo: "La gerencia necesita un estudio que determine el comportamiento de la competencia para un nuevo centro comercial. Tu trabajo como analista es resolver el análisis de la competencia presentando hallazgos concretos y sustentados.",
 };
 
 const COMPETITOR_DATA = [
@@ -73,13 +73,13 @@ const STRATA = [
 
 const CAP = {
   id: "cap2", title: "Análisis de la competencia", icon: Search,
-  intro: "Define primero tu enfoque competitivo. Al responder las dos primeras preguntas podrás ver la información del mercado para tu análisis; ten en cuenta que, una vez vista, no podrás modificar esas dos respuestas.",
+  intro: "Define primero tu enfoque competitivo. Al responder las dos primeras preguntas podrás ver la información del mercado para tu análisis; ten en cuenta que, una vez vista, no podrás modificar estas dos respuestas.",
   questions: [
-    { id: "c2q1", q: "¿Cuál es el FORMATO COMERCIAL que evaluarías para considerarlo competidor y bajo qué criterios lo harías? (máx. 200 palabras)", max: 200 },
+    { id: "c2q1", q: "Teniendo en cuenta el tamaño a desarrollar del proyecto comercial, ¿qué tipo de proyectos comerciales evaluarías para tener como competencia? (máx. 200 palabras)", max: 200 },
     { id: "c2q2", q: "¿Qué ASPECTOS evaluarías de ese competidor? Elabora un listado de los 5 componentes principales.", list: true },
-    { id: "c2q3", q: "Con base en la TABLA de competidores y la UBICACIÓN de cada uno en el mapa, realiza un análisis MACRO del comportamiento de la competencia." },
+    { id: "c2q3", q: "Con base en la TABLA de competidores y la UBICACIÓN de cada uno en el mapa, realiza un análisis MACRO de las características de la competencia." },
     { id: "c2q4", q: "Con base en los hallazgos de la competencia, ¿consideras que el lote del proyecto está bien ubicado o debería estar en otra zona de la ciudad? Justifica tu respuesta." },
-    { id: "c2q5", q: "Además de la competencia, ¿qué otros componentes tendrías en cuenta al evaluar la idoneidad de un lote para un centro comercial? Enumera al menos 5 componentes y explica brevemente la relevancia de cada uno." },
+    { id: "c2q5", q: "Además de la competencia, ¿qué otras variables tendrías en cuenta al evaluar la idoneidad de un lote para un centro comercial? Enumera al menos 5 componentes y explica brevemente la relevancia de cada uno." },
   ],
 };
 
@@ -252,7 +252,7 @@ function App() {
               <Card>
                 <div className="flex items-start gap-3"><div className="bg-amber-100 rounded-lg p-2 mt-0.5"><FileText size={20} className="text-amber-700" /></div><div><h2 className="text-xl font-bold text-slate-900">Brief del caso</h2><p className="text-sm text-slate-500">Lee atentamente antes de comenzar</p></div></div>
                 <div className="mt-4 space-y-3 text-sm leading-relaxed text-slate-700">
-                  <p><span className="font-semibold text-slate-900">Tu rol:</span> Eres analista junior en una firma de investigación de mercados. Un cliente desarrollador te ha encargado el análisis de competencia para un nuevo centro comercial; debes resolverlo demostrando tu razonamiento.</p>
+                  <p><span className="font-semibold text-slate-900">Tu rol:</span> Eres analista junior en una firma de investigación de mercados. Un cliente desarrollador te ha encargado el análisis de la competencia para un nuevo centro comercial; debes resolverlo demostrando tu razonamiento.</p>
                   <div className="bg-slate-50 border border-slate-100 rounded-lg p-4"><p className="font-semibold text-slate-900 mb-1">Cliente: {BRIEF.cliente}</p><p>{BRIEF.contexto}</p><p className="mt-2">{BRIEF.encargo}</p></div>
                 </div>
               </Card>
