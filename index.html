@@ -54,7 +54,7 @@ const BRIEF = {
 };
 
 const COMPETITOR_DATA = [
-  { n: 1, cc: "Cerritos Mall", pob: "14.795", hog: "6.064", ing: "16.020.557", ac: "34.000", gla: "12.000", pgla: "35,29%", loc: 90, par: 300, niv: 12 },
+  { n: 1, cc: "Cerritos Mall", pob: "14.795", hog: "6.064", ing: "16.020.557", ac: "34.000", gla: "12.000", pgla: "35,29%", loc: 90, par: 300, niv: 2 },
   { n: 2, cc: "Paseo del Prado", pob: "21.765", hog: "8.920", ing: "14.689.906", ac: "50.000", gla: "22.000", pgla: "44,00%", loc: 143, par: 500, niv: 4 },
   { n: 3, cc: "Unicentro", pob: "191.443", hog: "78.464", ing: "5.297.069", ac: "62.577", gla: "43.000", pgla: "68,72%", loc: 173, par: 700, niv: 3 },
   { n: 4, cc: "Bolívar Plaza", pob: "292.189", hog: "117.967", ing: "6.751.949", ac: "15.000", gla: "3.500", pgla: "23,33%", loc: 75, par: 150, niv: 2 },
@@ -63,7 +63,7 @@ const COMPETITOR_DATA = [
   { n: 7, cc: "Parque Arboleda", pob: "287.080", hog: "115.655", ing: "6.215.589", ac: "108.000", gla: "41.000", pgla: "37,96%", loc: 162, par: 720, niv: 4 },
   { n: 8, cc: "Único Outlet", pob: "288.083", hog: "114.046", ing: "5.255.778", ac: "25.000", gla: "10.236", pgla: "40,94%", loc: 80, par: 300, niv: 1 },
   { n: 9, cc: "El Progreso", pob: "227.963", hog: "88.836", ing: "3.798.858", ac: "28.000", gla: "14.159", pgla: "50,57%", loc: 153, par: 500, niv: 1 },
-  { n: 10, cc: "Tacuará", pob: "172.199", hog: "66.763", ing: "4.023.447", ac: "16.500", gla: "11.000", pgla: "66,67%", loc: 53, par: 159, niv: 12 },
+  { n: 10, cc: "Tacuará", pob: "172.199", hog: "66.763", ing: "4.023.447", ac: "16.500", gla: "11.000", pgla: "66,67%", loc: 53, par: 159, niv: 2 },
 ];
 
 const STRATA = [
@@ -79,7 +79,7 @@ const CAP = {
     { id: "c2q2", q: "¿Qué ASPECTOS evaluarías de ese competidor? Elabora un listado de los 5 componentes principales.", list: true },
     { id: "c2q3", q: "Con base en la TABLA de competidores y la UBICACIÓN de cada uno en el mapa, realiza un análisis MACRO de las características de la competencia." },
     { id: "c2q4", q: "Con base en los hallazgos de la competencia, ¿consideras que el lote del proyecto está bien ubicado o debería estar en otra zona de la ciudad? Justifica tu respuesta." },
-    { id: "c2q5", q: "Además de la competencia, ¿qué otras variables tendrías en cuenta al evaluar la idoneidad de un lote para un centro comercial? Enumera al menos 5 componentes y explica brevemente la relevancia de cada uno." },
+    { id: "c2q5", q: "Además de la competencia, ¿qué otras variables tendrías en cuenta al evaluar la idoneidad de un lote para un centro comercial? Enumera al menos 5 componentes y explica brevemente la relevancia de cada uno.", customText: "Escribe mínimo 5 variables y descríbelas" },
   ],
 };
 
@@ -188,8 +188,8 @@ function App() {
   const renderQuestion = (q, i, locked) => {
     const max = q.max || MAX_WORDS;
     const count = wc(answers[q.id]);
-    const over = !q.list && count > max;
-    const placeholder = q.list ? "Escribe tu listado de 5 componentes (uno por línea)..." : ("Escribe aquí tu respuesta (máx. " + max + " palabras)...");
+    const over = !q.list && !q.customText && count > max;
+    const placeholder = q.customText ? (q.customText + "...") : q.list ? "Escribe tu listado de 5 componentes (uno por línea)..." : ("Escribe aquí tu respuesta (máx. " + max + " palabras)...");
     return (
       <Card key={q.id}>
         <div className="flex gap-3">
@@ -207,7 +207,7 @@ function App() {
             <div className="flex items-center justify-between mt-1.5">
               {locked
                 ? <span className="text-[11px] text-slate-500 flex items-center gap-1"><Lock size={11} /> Bloqueada en esta sesión · se habilitará al reabrir el link</span>
-                : <span className={"text-[11px] " + (over ? "text-red-600 font-semibold" : "text-slate-400")}>{q.list ? "Listado de 5 componentes" : (count + " / " + max + " palabras" + (over ? " · excede el límite" : ""))}</span>}
+                : <span className={"text-[11px] " + (over ? "text-red-600 font-semibold" : "text-slate-400")}>{q.customText ? q.customText : q.list ? "Listado de 5 componentes" : (count + " / " + max + " palabras" + (over ? " · excede el límite" : ""))}</span>}
               {!locked && (answers[q.id] || "").trim() && !over && <span className="text-[11px] text-emerald-600 flex items-center gap-1"><CheckCircle2 size={12} /> Respondida</span>}
             </div>
             {evaluator && <ScoreRow id={q.id} scores={scores} update={update} />}
