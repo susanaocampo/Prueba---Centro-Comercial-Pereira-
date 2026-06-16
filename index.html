@@ -5,9 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Prueba de Caso — Nuevo centro comercial en Pereira</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+  <script>
+    // Si algo falla al cargar, muestra el error en pantalla en lugar de dejarla en blanco.
+    window.addEventListener("error", function (e) {
+      var r = document.getElementById("root");
+      if (r && !r.hasChildNodes()) {
+        r.innerHTML = '<div style="font-family:system-ui;max-width:680px;margin:40px auto;padding:20px;border:1px solid #fecaca;background:#fef2f2;border-radius:12px;color:#991b1b"><strong>Ocurrió un error al cargar la aplicación.</strong><pre style="white-space:pre-wrap;font-size:13px;margin-top:10px">' + (e.message || (e.error && e.error.message) || e) + '</pre><p style="font-size:12px;color:#7f1d1d;margin-top:8px">Revisa también la consola del navegador (F12) para más detalle.</p></div>';
+      }
+    });
+  </script>
   <style> body { margin: 0; } </style>
 </head>
 <body>
@@ -483,7 +492,13 @@ function Card({ children }) {
   return <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">{children}</div>;
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+try {
+  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+} catch (err) {
+  document.getElementById("root").innerHTML =
+    '<div style="font-family:system-ui;max-width:680px;margin:40px auto;padding:20px;border:1px solid #fecaca;background:#fef2f2;border-radius:12px;color:#991b1b"><strong>No se pudo iniciar la aplicación.</strong><pre style="white-space:pre-wrap;font-size:13px;margin-top:10px">' + (err && err.message ? err.message : err) + '</pre></div>';
+  console.error(err);
+}
   </script>
 </body>
 </html>
