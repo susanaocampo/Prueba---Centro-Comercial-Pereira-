@@ -4,14 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Prueba de Caso — Nuevo centro comercial en Pereira</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <style> body { margin: 0; } </style>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+  <style>
+    body { margin: 0; }
+    #carga-fallback {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      font-family: ui-sans-serif, system-ui, sans-serif; color: #475569; text-align: center; padding: 24px;
+    }
+  </style>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <div id="carga-fallback">
+      <div>
+        <p style="font-size:15px;font-weight:600;color:#0f172a;">Cargando la prueba…</p>
+        <p id="carga-mensaje" style="font-size:13px;margin-top:8px;">Si en unos segundos no aparece nada, revisa tu conexión a internet y recarga la página (Ctrl + Shift + R).</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Si React/Babel no se cargan (red bloqueada, CDN caído), avisamos en vez de dejar pantalla en blanco.
+    window.setTimeout(function () {
+      var fb = document.getElementById("carga-fallback");
+      if (fb) {
+        var msg = document.getElementById("carga-mensaje");
+        if (msg) {
+          msg.innerHTML = "No se pudo cargar la aplicación. Verifica tu conexión a internet o desactiva bloqueadores/antivirus que puedan estar bloqueando los recursos, y recarga con Ctrl + Shift + R.";
+          msg.style.color = "#b45309";
+          msg.style.fontWeight = "600";
+        }
+      }
+    }, 8000);
+  </script>
+
   <script type="text/babel" data-presets="react">
 const { useState, useEffect } = React;
 
