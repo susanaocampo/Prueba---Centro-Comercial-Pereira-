@@ -15,6 +15,7 @@
   <script type="text/babel" data-presets="react">
 const { useState, useEffect } = React;
 
+// ====== ICONOS ======
 const mkIcon = (children) => ({ size = 24, className = "", fill = "none", style } = {}) =>
   <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} style={style}>{children}</svg>;
 
@@ -39,6 +40,7 @@ const Mail = mkIcon(<g><rect width="20" height="16" x="2" y="4" rx="2"/><path d=
 const Loader = mkIcon(<g><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></g>);
 const Table2 = mkIcon(<path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>);
 
+// ====== CONFIGURACIÓN ======
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xlgkgbvl";
 const MAP_COMPETIDORES_URL = "https://i.postimg.cc/vZ4SgpPk/IMAGEN-PARA-EXAMEN.jpg";
 
@@ -50,11 +52,11 @@ const MAX_WORDS = 300;
 const BRIEF = {
   cliente: "Inversiones Comerciales del Café S.A.S.",
   contexto: "Inversiones Comerciales del Café es un grupo desarrollador inmobiliario con experiencia en proyectos comerciales en el centro-occidente del país. El grupo evalúa el desarrollo de un nuevo centro comercial en Pereira y ya tiene identificado un lote candidato.",
-  encargo: "La gerencia necesita un estudio que determine el comportamiento de la competencia para un nuevo centro comercial. Tu trabajo como analista es resolver el análisis de la competencia presentando hallazgos concretos y sustentados.",
+  encargo: "La gerencia necesita un estudio que determine el comportamiento de la competencia para un nuevo centro comercial. Tu trabajo como analista es resolver el análisis de competencia presentando hallazgos concretos y sustentados.",
 };
 
 const COMPETITOR_DATA = [
-  { n: 1, cc: "Cerritos Mall", pob: "14.795", hog: "6.064", ing: "16.020.557", ac: "34.000", gla: "12.000", pgla: "35,29%", loc: 90, par: 300, niv: 2 },
+  { n: 1, cc: "Cerritos Mall", pob: "14.795", hog: "6.064", ing: "16.020.557", ac: "34.000", gla: "12.000", pgla: "35,29%", loc: 90, par: 300, niv: 12 },
   { n: 2, cc: "Paseo del Prado", pob: "21.765", hog: "8.920", ing: "14.689.906", ac: "50.000", gla: "22.000", pgla: "44,00%", loc: 143, par: 500, niv: 4 },
   { n: 3, cc: "Unicentro", pob: "191.443", hog: "78.464", ing: "5.297.069", ac: "62.577", gla: "43.000", pgla: "68,72%", loc: 173, par: 700, niv: 3 },
   { n: 4, cc: "Bolívar Plaza", pob: "292.189", hog: "117.967", ing: "6.751.949", ac: "15.000", gla: "3.500", pgla: "23,33%", loc: 75, par: 150, niv: 2 },
@@ -63,7 +65,7 @@ const COMPETITOR_DATA = [
   { n: 7, cc: "Parque Arboleda", pob: "287.080", hog: "115.655", ing: "6.215.589", ac: "108.000", gla: "41.000", pgla: "37,96%", loc: 162, par: 720, niv: 4 },
   { n: 8, cc: "Único Outlet", pob: "288.083", hog: "114.046", ing: "5.255.778", ac: "25.000", gla: "10.236", pgla: "40,94%", loc: 80, par: 300, niv: 1 },
   { n: 9, cc: "El Progreso", pob: "227.963", hog: "88.836", ing: "3.798.858", ac: "28.000", gla: "14.159", pgla: "50,57%", loc: 153, par: 500, niv: 1 },
-  { n: 10, cc: "Tacuará", pob: "172.199", hog: "66.763", ing: "4.023.447", ac: "16.500", gla: "11.000", pgla: "66,67%", loc: 53, par: 159, niv: 2 },
+  { n: 10, cc: "Tacuará", pob: "172.199", hog: "66.763", ing: "4.023.447", ac: "16.500", gla: "11.000", pgla: "66,67%", loc: 53, par: 159, niv: 12 },
 ];
 
 const STRATA = [
@@ -73,13 +75,13 @@ const STRATA = [
 
 const CAP = {
   id: "cap2", title: "Análisis de la competencia", icon: Search,
-  intro: "Define primero tu enfoque competitivo. Al responder las dos primeras preguntas podrás ver la información del mercado para tu análisis; ten en cuenta que, una vez vista, no podrás modificar estas dos respuestas.",
+  intro: "Define primero tu enfoque competitivo. Al responder las dos primeras preguntas podrás ver la información del mercado para tu análisis; ten en cuenta que, una vez vista, no podrás modificar esas dos respuestas.",
   questions: [
-    { id: "c2q1", q: "Teniendo en cuenta el tamaño a desarrollar del proyecto comercial, ¿qué tipo de proyectos comerciales evaluarías para tener como competencia? (máx. 200 palabras)", max: 200 },
+    { id: "c2q1", q: "¿Cuál es el FORMATO COMERCIAL que evaluarías para considerarlo competidor y bajo qué criterios lo harías? (máx. 200 palabras)", max: 200 },
     { id: "c2q2", q: "¿Qué ASPECTOS evaluarías de ese competidor? Elabora un listado de los 5 componentes principales.", list: true },
-    { id: "c2q3", q: "Con base en la TABLA de competidores y la UBICACIÓN de cada uno en el mapa, realiza un análisis MACRO de las características de la competencia." },
+    { id: "c2q3", q: "Con base en la TABLA de competidores y la UBICACIÓN de cada uno en el mapa, realiza un análisis MACRO del comportamiento de la competencia." },
     { id: "c2q4", q: "Con base en los hallazgos de la competencia, ¿consideras que el lote del proyecto está bien ubicado o debería estar en otra zona de la ciudad? Justifica tu respuesta." },
-    { id: "c2q5", q: "Además de la competencia, ¿qué otras variables tendrías en cuenta al evaluar la idoneidad de un lote para un centro comercial? Enumera al menos 5 componentes y explica brevemente la relevancia de cada uno.", customText: "Escribe mínimo 5 variables y descríbelas" },
+    { id: "c2q5", q: "Además de la competencia, ¿qué otros componentes tendrías en cuenta al evaluar la idoneidad de un lote para un centro comercial? Enumera al menos 5 componentes y explica brevemente la relevancia de cada uno." },
   ],
 };
 
@@ -102,10 +104,7 @@ function App() {
   const [evaluator, setEvaluator] = useState(false);
   const [scores, setScores] = useState({});
   const [evalNotes, setEvalNotes] = useState("");
-  // revealed: persiste en localStorage (¿alguna vez vio la info del mercado?)
   const [revealed, setRevealed] = useState(false);
-  // lockedInSession: solo en memoria de sesión (se resetea al reabrir el link)
-  const [lockedInSession, setLockedInSession] = useState(false);
   const [saved, setSaved] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitResult, setSubmitResult] = useState(null);
@@ -113,45 +112,19 @@ function App() {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORE_KEY);
-      if (raw) {
-        const d = JSON.parse(raw);
-        setAnswers(d.answers || {});
-        setCandidate(d.candidate || "");
-        setScores(d.scores || {});
-        setEvalNotes(d.evalNotes || "");
-        setRevealed(d.revealed || false);
-        // lockedInSession NO se restaura: siempre arranca desbloqueado
-      }
+      if (raw) { const d = JSON.parse(raw); setAnswers(d.answers || {}); setCandidate(d.candidate || ""); setScores(d.scores || {}); setEvalNotes(d.evalNotes || ""); setRevealed(d.revealed || false); }
     } catch (e) {}
   }, []);
 
   const persist = (next) => {
-    try {
-      localStorage.setItem(STORE_KEY, JSON.stringify(next));
-      setSaved(true);
-      setTimeout(() => setSaved(false), 1200);
-    } catch (e) {}
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(next)); setSaved(true); setTimeout(() => setSaved(false), 1200); } catch (e) {}
   };
-
   const update = (patch) => {
     const next = { answers, candidate, scores, evalNotes, revealed, ...patch };
-    setAnswers(next.answers);
-    setCandidate(next.candidate);
-    setScores(next.scores);
-    setEvalNotes(next.evalNotes);
-    setRevealed(next.revealed);
+    setAnswers(next.answers); setCandidate(next.candidate); setScores(next.scores); setEvalNotes(next.evalNotes); setRevealed(next.revealed);
     persist(next);
   };
-
   const setAnswer = (id, val) => update({ answers: { ...answers, [id]: val } });
-
-  // Bloquear preguntas 1 y 2 solo si ya se reveló la info EN ESTA SESIÓN
-  const q12Locked = lockedInSession;
-
-  const handleReveal = () => {
-    update({ revealed: true });
-    setLockedInSession(true);
-  };
 
   const answered = ALL_QIDS.filter((id) => (answers[id] || "").trim().length > 0).length;
   const pct = Math.round((answered / ALL_QIDS.length) * 100);
@@ -188,26 +161,19 @@ function App() {
   const renderQuestion = (q, i, locked) => {
     const max = q.max || MAX_WORDS;
     const count = wc(answers[q.id]);
-    const over = !q.list && !q.customText && count > max;
-    const placeholder = q.customText ? (q.customText + "...") : q.list ? "Escribe tu listado de 5 componentes (uno por línea)..." : ("Escribe aquí tu respuesta (máx. " + max + " palabras)...");
+    const over = !q.list && count > max;
+    const placeholder = q.list ? "Escribe tu listado de 5 componentes (uno por línea)..." : ("Escribe aquí tu respuesta (máx. " + max + " palabras)...");
     return (
       <Card key={q.id}>
         <div className="flex gap-3">
           <div className="flex-shrink-0 w-7 h-7 rounded-full bg-slate-900 text-white text-sm font-bold flex items-center justify-center">{i + 1}</div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-slate-900 leading-relaxed">{q.q}</p>
-            <textarea
-              value={answers[q.id] || ""}
-              readOnly={locked}
-              onChange={(e) => !locked && setAnswer(q.id, e.target.value)}
-              placeholder={placeholder}
-              rows={6}
-              className={"mt-3 w-full border rounded-lg px-3 py-2.5 text-sm leading-relaxed focus:outline-none resize-y " + (locked ? "bg-slate-100 text-slate-500 border-slate-200 cursor-not-allowed" : "focus:ring-2 " + (over ? "border-red-400 focus:ring-red-400" : "border-slate-200 focus:ring-amber-400"))}
-            />
+            <textarea value={answers[q.id] || ""} readOnly={locked} onChange={(e) => !locked && setAnswer(q.id, e.target.value)} placeholder={placeholder} rows={6} className={"mt-3 w-full border rounded-lg px-3 py-2.5 text-sm leading-relaxed focus:outline-none resize-y " + (locked ? "bg-slate-100 text-slate-500 border-slate-200 cursor-not-allowed" : "focus:ring-2 " + (over ? "border-red-400 focus:ring-red-400" : "border-slate-200 focus:ring-amber-400"))} />
             <div className="flex items-center justify-between mt-1.5">
               {locked
-                ? <span className="text-[11px] text-slate-500 flex items-center gap-1"><Lock size={11} /> Bloqueada en esta sesión · se habilitará al reabrir el link</span>
-                : <span className={"text-[11px] " + (over ? "text-red-600 font-semibold" : "text-slate-400")}>{q.customText ? q.customText : q.list ? "Listado de 5 componentes" : (count + " / " + max + " palabras" + (over ? " · excede el límite" : ""))}</span>}
+                ? <span className="text-[11px] text-slate-500 flex items-center gap-1"><Lock size={11} /> Respuesta bloqueada (ya viste la información del mercado)</span>
+                : <span className={"text-[11px] " + (over ? "text-red-600 font-semibold" : "text-slate-400")}>{q.list ? "Listado de 5 componentes" : (count + " / " + max + " palabras" + (over ? " · excede el límite" : ""))}</span>}
               {!locked && (answers[q.id] || "").trim() && !over && <span className="text-[11px] text-emerald-600 flex items-center gap-1"><CheckCircle2 size={12} /> Respondida</span>}
             </div>
             {evaluator && <ScoreRow id={q.id} scores={scores} update={update} />}
@@ -221,13 +187,8 @@ function App() {
     <div className="min-h-screen bg-slate-50 text-slate-800">
       <div className="bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-5 py-5 flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-3">
-            <div className="bg-amber-500 rounded-lg p-2"><Building2 size={22} className="text-slate-900" /></div>
-            <div><h1 className="text-lg font-bold leading-tight">Prueba de Caso de Estudio</h1><p className="text-slate-300 text-xs flex items-center gap-1"><MapPin size={12} /> Análisis de competencia — centro comercial en Pereira</p></div>
-          </div>
-          <button onClick={() => setEvaluator((v) => !v)} className={"flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full transition " + (evaluator ? "bg-amber-500 text-slate-900" : "bg-slate-700 text-slate-200 hover:bg-slate-600")}>
-            {evaluator ? <Unlock size={13} /> : <Lock size={13} />}{evaluator ? "Modo evaluador" : "Modo candidato"}
-          </button>
+          <div className="flex items-center gap-3"><div className="bg-amber-500 rounded-lg p-2"><Building2 size={22} className="text-slate-900" /></div><div><h1 className="text-lg font-bold leading-tight">Prueba de Caso de Estudio</h1><p className="text-slate-300 text-xs flex items-center gap-1"><MapPin size={12} /> Análisis de competencia — centro comercial en Pereira</p></div></div>
+          <button onClick={() => setEvaluator((v) => !v)} className={"flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full transition " + (evaluator ? "bg-amber-500 text-slate-900" : "bg-slate-700 text-slate-200 hover:bg-slate-600")}>{evaluator ? <Unlock size={13} /> : <Lock size={13} />}{evaluator ? "Modo evaluador" : "Modo candidato"}</button>
         </div>
       </div>
 
@@ -252,7 +213,7 @@ function App() {
               <Card>
                 <div className="flex items-start gap-3"><div className="bg-amber-100 rounded-lg p-2 mt-0.5"><FileText size={20} className="text-amber-700" /></div><div><h2 className="text-xl font-bold text-slate-900">Brief del caso</h2><p className="text-sm text-slate-500">Lee atentamente antes de comenzar</p></div></div>
                 <div className="mt-4 space-y-3 text-sm leading-relaxed text-slate-700">
-                  <p><span className="font-semibold text-slate-900">Tu rol:</span> Eres analista junior en una firma de investigación de mercados. Un cliente desarrollador te ha encargado el análisis de la competencia para un nuevo centro comercial; debes resolverlo demostrando tu razonamiento.</p>
+                  <p><span className="font-semibold text-slate-900">Tu rol:</span> Eres analista junior en una firma de investigación de mercados. Un cliente desarrollador te ha encargado el análisis de competencia para un nuevo centro comercial; debes resolverlo demostrando tu razonamiento.</p>
                   <div className="bg-slate-50 border border-slate-100 rounded-lg p-4"><p className="font-semibold text-slate-900 mb-1">Cliente: {BRIEF.cliente}</p><p>{BRIEF.contexto}</p><p className="mt-2">{BRIEF.encargo}</p></div>
                 </div>
               </Card>
@@ -282,7 +243,7 @@ function App() {
                 <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start gap-3"><Brain size={20} className="text-amber-600 mt-0.5 flex-shrink-0" /><div className="text-sm text-amber-900"><p className="font-semibold">Se evalúa especialmente el pensamiento crítico y analítico.</p><p className="mt-1">No buscamos respuestas memorizadas: queremos ver cómo estructuras el problema, qué supuestos haces y cómo conectas la evidencia con tus conclusiones.</p></div></div>
                 <div className="grid sm:grid-cols-2 gap-4 text-sm mt-4">
                   <div className="flex items-start gap-2"><Clock size={18} className="text-slate-400 mt-0.5" /><div><p className="font-semibold text-slate-900">Tiempo sugerido</p><p className="text-slate-600">1 a 2 horas. Valoramos la calidad del razonamiento.</p></div></div>
-                  <div className="flex items-start gap-2"><AlertCircle size={18} className="text-slate-400 mt-0.5" /><div><p className="font-semibold text-slate-900">Importante</p><p className="text-slate-600">Al ver la tabla y el mapa, las dos primeras respuestas se bloquean para esa sesión. Al reabrir el link se habilitarán nuevamente.</p></div></div>
+                  <div className="flex items-start gap-2"><AlertCircle size={18} className="text-slate-400 mt-0.5" /><div><p className="font-semibold text-slate-900">Importante</p><p className="text-slate-600">Tras ver la tabla y el mapa no podrás cambiar las dos primeras respuestas.</p></div></div>
                 </div>
                 <div className="mt-4 pt-4 border-t border-slate-100"><label className="text-sm font-semibold text-slate-900 flex items-center gap-1.5 mb-1.5"><User size={15} /> Nombre del candidato</label><input value={candidate} onChange={(e) => update({ candidate: e.target.value })} placeholder="Escribe tu nombre completo" className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" /></div>
                 <p className="text-xs text-slate-500 mt-3 flex items-start gap-1.5"><Mail size={14} className="mt-0.5 flex-shrink-0" /> Al terminar, ve a <span className="font-semibold">"Enviar prueba"</span> para remitir tus respuestas al reclutador.</p>
@@ -296,34 +257,15 @@ function App() {
               <Card>
                 <div className="flex items-center gap-3"><div className="bg-amber-100 rounded-lg p-2"><Search size={22} className="text-amber-700" /></div><div><h2 className="text-xl font-bold text-slate-900">{CAP.title}</h2></div></div>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">{CAP.intro}</p>
-                {revealed && !lockedInSession && (
-                  <div className="mt-3 bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 flex items-center gap-2 text-sm text-blue-800">
-                    <Unlock size={14} className="flex-shrink-0" />
-                    <span>Nueva sesión detectada: las preguntas 1 y 2 están <strong>habilitadas</strong> para que puedas editarlas. Al ver nuevamente los datos del mercado se bloquearán.</span>
-                  </div>
-                )}
               </Card>
 
-              {renderQuestion(CAP.questions[0], 0, q12Locked)}
-              {renderQuestion(CAP.questions[1], 1, q12Locked)}
+              {renderQuestion(CAP.questions[0], 0, revealed)}
+              {renderQuestion(CAP.questions[1], 1, revealed)}
 
               {revealed ? (
                 <>
-                  {!lockedInSession && (
-                    <Card>
-                      <div className="text-center py-2">
-                        <p className="text-sm text-slate-700">Ya habías visto la <span className="font-semibold">tabla de competidores</span> y el <span className="font-semibold">mapa georreferenciado</span> en una sesión anterior.</p>
-                        <p className="text-xs text-amber-700 mt-1 font-medium flex items-center justify-center gap-1"><Lock size={12} /> Al hacer clic abajo se bloquearán las dos primeras preguntas para esta sesión.</p>
-                        <button onClick={() => setLockedInSession(true)} className="mt-4 inline-flex items-center gap-2 bg-amber-500 text-slate-900 font-semibold text-sm px-5 py-2.5 rounded-lg hover:bg-amber-400 transition">Ver datos del mercado <ChevronRight size={16} /></button>
-                      </div>
-                    </Card>
-                  )}
-                  {lockedInSession && (
-                    <>
-                      <CompetitorTable />
-                      <MapBlock />
-                    </>
-                  )}
+                  <CompetitorTable />
+                  <MapBlock />
                   {renderQuestion(CAP.questions[2], 2, false)}
                   {renderQuestion(CAP.questions[3], 3, false)}
                   {renderQuestion(CAP.questions[4], 4, false)}
@@ -333,8 +275,8 @@ function App() {
                   {(answers.c2q1 || "").trim() && (answers.c2q2 || "").trim() ? (
                     <div className="text-center py-2">
                       <p className="text-sm text-slate-700">Al continuar verás la <span className="font-semibold">tabla de competidores</span> y el <span className="font-semibold">mapa georreferenciado</span> para tu análisis.</p>
-                      <p className="text-xs text-amber-700 mt-1 font-medium flex items-center justify-center gap-1"><Lock size={12} /> Después de verlos las dos preguntas anteriores se bloquearán para esta sesión.</p>
-                      <button onClick={handleReveal} className="mt-4 inline-flex items-center gap-2 bg-amber-500 text-slate-900 font-semibold text-sm px-5 py-2.5 rounded-lg hover:bg-amber-400 transition">Ver datos del mercado y continuar <ChevronRight size={16} /></button>
+                      <p className="text-xs text-amber-700 mt-1 font-medium flex items-center justify-center gap-1"><Lock size={12} /> Después de verlos no podrás modificar las dos preguntas anteriores.</p>
+                      <button onClick={() => update({ revealed: true })} className="mt-4 inline-flex items-center gap-2 bg-amber-500 text-slate-900 font-semibold text-sm px-5 py-2.5 rounded-lg hover:bg-amber-400 transition">Ver datos del mercado y continuar <ChevronRight size={16} /></button>
                     </div>
                   ) : (
                     <div className="text-center py-2">
